@@ -38,7 +38,7 @@ axios.get(url).then(response=>{
 }
 
 peticionPost=async()=>{
-  delete this.state.form.id;
+  delete this.state.form.id_persona;
  await axios.post(url+"crear",this.state.form).then(response=>{
     this.modalInsertar();
     this.peticionGet();
@@ -48,16 +48,21 @@ peticionPost=async()=>{
 }
 
 peticionPut=()=>{
-  axios.put(url+this.state.form.id, this.state.form).then(response=>{
+  axios.put(url+this.state.form.id_persona, this.state.form).then(response=>{
     this.modalInsertar();
     this.peticionGet();
+  }).catch(error=>{
+    console.log(error.message);
   })
 }
 
-peticionDelete=()=>{
-  axios.delete(url+this.state.form.id).then(response=>{
+peticionDelete=()=>{  
+  console.log(this.state)
+  axios.delete(url+this.state.form.id_persona).then(response=>{
     this.setState({modalEliminar: false});
     this.peticionGet();
+  }).catch(error=>{
+    console.log(error.message);
   })
 }
 
@@ -154,7 +159,7 @@ console.log(this.state.form);
                   
                   <div className="form-group">
                     <label htmlFor="id_persona">ID</label>
-                    <input className="form-control" type="text" name="id_persona" id="id_persona" readOnly onChange={this.handleChange} value={form?form.id: this.state.data.length+1}/>
+                    <input className="form-control" type="text" name="id_persona" id= "id_persona" readOnly onChange={this.handleChange} value={form?form.id_persona: this.state.data.length +1 }/>
                     <br />
                     <label htmlFor="Nombre">Nombre</label>
                     <input className="form-control" type="text" name="Nombre" id="Nombre" onChange={this.handleChange} value={form?form.Nombre: ''}/>
@@ -163,7 +168,11 @@ console.log(this.state.form);
                     <input className="form-control" type="text" name="Apellido" id="Apellido" onChange={this.handleChange} value={form?form.Apellido: ''}/>
                     <br />
                     <label htmlFor="Tipo_de_documento">Tipo de documento de identidad</label>
-                    <input className="form-control" type="text" name="Tipo_de_documento" id="Tipo_de_documento" onChange={this.handleChange} value={form?form.Tipo_de_documento: ''}/>
+                    <select className="form-control" value={form?form.Tipo_de_documento: ''} onChange={this.handleChange}>
+                              <option value="0">Seleccionar</option>
+                              <option value="1">Tarjeta de identidad</option>
+                              <option value="2">Cedula de ciudadania</option>                            
+                               </select>                    
                     <br />
                     <label htmlFor="Documento_de_identidad">Documento de identidad</label>
                     <input className="form-control" type="text" name="Documento_de_identidad" id="Documento_de_identidad" onChange={this.handleChange} value={form?form.Documento_de_identidad: ''}/>
@@ -175,7 +184,7 @@ console.log(this.state.form);
                     <input className="form-control" type="text" name="Celular" id="Celular" onChange={this.handleChange} value={form?form.Celular: ''}/>
                     <br />
                     <label htmlFor="Fecha_de_Nacimiento">Fecha de Nacimiento</label>
-                    <input className="form-control" type="text" name="Fecha_de_Nacimiento" id="Fecha_de_Nacimiento" onChange={this.handleChange} value={form?form.Fecha_de_Nacimiento: ''}/>
+                    <input className="form-control" type="text" placeholder="AAAA-MM-DD" name="Fecha_de_Nacimiento" id="Fecha_de_Nacimiento" onChange={this.handleChange} value={form?form.Fecha_de_Nacimiento: ''}/>
                     <br />    
                     <label htmlFor="url">url</label>
                     <input className="form-control" type="text" name="url" id="url" onChange={this.handleChange} value={form?form.url: ''}/>
@@ -198,7 +207,7 @@ console.log(this.state.form);
 
           <Modal isOpen={this.state.modalEliminar}>
             <ModalBody>
-               Estás seguro que deseas eliminar a la persona {form && form.Nombre}
+               Estás seguro que deseas eliminar a la persona {form && form.Documento_de_identidad+' '+form.Nombre+' '+form.Apellido}
             </ModalBody>
             <ModalFooter>
               <button className="btn btn-danger" onClick={()=>this.peticionDelete()}>Sí</button>

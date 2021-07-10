@@ -3,6 +3,8 @@ const connection = require("../config/conecction");
 const pool = require("../config/conecction");
 const { promisify } = require('util');
 let modulo = {};
+
+//carga los datos que consulta en la base de datos
 modulo.read = async (param, callback) => {
     pool.getConnection(async (err, connection) => {
         connection.query = promisify(connection.query);
@@ -10,7 +12,7 @@ modulo.read = async (param, callback) => {
             try {
               
 
-                    const sql='SELECT * FROM empresa.persona'
+                    const sql='SELECT persona.id_persona,persona.Nombre,persona.Apellido,tipodocumento.nombre_tipo as Tipo_de_documento,persona.Documento_de_identidad,persona.Correo_Electronico,persona.Celular,persona.Fecha_de_Nacimiento,persona.url FROM empresa.persona inner join tipodocumento on Tipo_de_documento=id_tipodocumento '
                    result = await connection.query(sql);
                 
                     if(result){
@@ -28,7 +30,7 @@ modulo.read = async (param, callback) => {
         }
     });
 };
-//crea o actualiza los datos que me envia el front
+//insert los datos que me envia el front
 modulo.create = async (param, callback) => {
     pool.getConnection(async (err, connection) => {
         connection.query = promisify(connection.query);
@@ -55,6 +57,8 @@ modulo.create = async (param, callback) => {
         }
     });
 };
+
+//actualiza los datos que envia el front
 modulo.update = async (param, callback) => {
     pool.getConnection(async (err, connection) => {
         connection.query = promisify(connection.query);
@@ -80,7 +84,7 @@ modulo.update = async (param, callback) => {
         }
     });
 };
-
+//elimina el dato especifico que envia el front
 modulo.delete = async (param, callback) => {
     pool.getConnection(async (err, connection) => {
         connection.query = promisify(connection.query);

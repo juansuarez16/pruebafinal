@@ -6,7 +6,7 @@ const home = require('../controllers/home');
 
 
 //leerpersonas
-// router.get('/', home.index);
+
 router.get('/', home.read);
 //crearpersona
  router.post('/crear', home.create);

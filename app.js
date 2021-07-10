@@ -7,6 +7,9 @@ const app = express();
 const server = require('http').Server(app);
 const cors = require('cors');
 
+const routes = require("./routes/rutas.routes");
+const config = require("./config");
+
 app.use(helmet());
 app.use(cors({
     "origin": "*",
@@ -20,14 +23,16 @@ app.use(cors({
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: true }));
 
-const routes = require("./routes/rutas.routes");
-const config = require("./config");
 
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(express.json());
-
+//rutas
 app.use(routes);
 
+
+//server listen
 
 server.listen(config.settings.PORT, () => {
     console.log(`Running server in port ${config.settings.PORT}`);
