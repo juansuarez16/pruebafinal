@@ -15,12 +15,12 @@ state={
   modalInsertar: false,
   modalEliminar: false,
   form:{
-    id: '',
+    id_persona: '',
     Nombre: '',
     Apellido: '',
     Tipo_de_documento: '',
     Documento_de_identidad: '',
-    Correo_Electrónico: '',
+    Correo_Electronico: '',
     Celular: '',
     Fecha_de_Nacimiento:'',
     url:'',
@@ -31,6 +31,7 @@ state={
 peticionGet=()=>{
 axios.get(url).then(response=>{
   this.setState({data: response.data.row});  
+ 
 }).catch(error=>{
   console.log(error.message);
 })
@@ -38,7 +39,7 @@ axios.get(url).then(response=>{
 
 peticionPost=async()=>{
   delete this.state.form.id;
- await axios.post(url,this.state.form).then(response=>{
+ await axios.post(url+"crear",this.state.form).then(response=>{
     this.modalInsertar();
     this.peticionGet();
   }).catch(error=>{
@@ -64,14 +65,19 @@ modalInsertar=()=>{
   this.setState({modalInsertar: !this.state.modalInsertar});
 }
 
-seleccionarPersona=(Persona)=>{
+seleccionarPersona=(persona)=>{
   this.setState({
     tipoModal: 'actualizar',
     form: {
-      id: Persona.id,
-      nombre: Persona.nombre,
-      pais: Persona.pais,
-      capital_bursatil: Persona.capital_bursatil
+      id_persona: persona.id_persona,
+      Nombre:persona.Nombre,
+      Apellido: persona.Apellido,
+      Tipo_de_documento: persona.Tipo_de_documento,
+      Documento_de_identidad:persona.Documento_de_identidad,
+      Correo_Electronico:persona.Correo_Electronico,
+      Celular:persona.Celular,
+      Fecha_de_Nacimiento:persona.Fecha_de_Nacimiento,
+      url:persona.url
     }
   })
 }
@@ -123,15 +129,14 @@ console.log(this.state.form);
           <td>{persona.Apellido}</td>
           <td>{persona.Tipo_de_documento}</td>
           <td>{persona.Documento_de_identidad}</td>
-          <td>{persona.Correo_Electrónico}</td>
+          <td>{persona.Correo_Electronico}</td>
           <td>{persona.Celular}</td>
           <td>{persona.Fecha_de_Nacimiento}</td>
-          <td>{persona.url}</td>
-          {/* <td>{new Intl.NumberFormat("en-EN").format(empresa.capital_bursatil)}</td>  */}
+          <td>{persona.url}</td>          
           <td>
-                <button className="btn btn-primary" ><FontAwesomeIcon icon={faEdit}/></button>
+                <button className="btn btn-primary" onClick={()=>{this.seleccionarPersona(persona); this.modalInsertar()}}><FontAwesomeIcon icon={faEdit}/></button>
                 {"   "}
-                <button className="btn btn-danger" ><FontAwesomeIcon icon={faTrashAlt}/></button>
+                <button className="btn btn-danger" onClick={()=>{this.seleccionarPersona(persona); this.setState({modalEliminar: true})}}><FontAwesomeIcon icon={faTrashAlt}/></button>
                 </td>
           </tr>
           )
@@ -146,30 +151,31 @@ console.log(this.state.form);
                   <span style={{float: 'right'}} onClick={()=>this.modalInsertar()}>x</span>
                 </ModalHeader>
                 <ModalBody>
+                  
                   <div className="form-group">
-                    <label htmlFor="id">ID</label>
-                    <input className="form-control" type="text" name="id" id="id" readOnly onChange={this.handleChange} value={form?form.id: this.state.data.length+1}/>
+                    <label htmlFor="id_persona">ID</label>
+                    <input className="form-control" type="text" name="id_persona" id="id_persona" readOnly onChange={this.handleChange} value={form?form.id: this.state.data.length+1}/>
                     <br />
-                    <label htmlFor="nombre">Nombre</label>
-                    <input className="form-control" type="text" name="nombre" id="nombre" onChange={this.handleChange} value={form?form.Nombre: ''}/>
+                    <label htmlFor="Nombre">Nombre</label>
+                    <input className="form-control" type="text" name="Nombre" id="Nombre" onChange={this.handleChange} value={form?form.Nombre: ''}/>
                     <br />
-                    <label htmlFor="apellido">Apellido</label>
-                    <input className="form-control" type="text" name="apellido" id="apellido" onChange={this.handleChange} value={form?form.Apellido: ''}/>
+                    <label htmlFor="Apellido">Apellido</label>
+                    <input className="form-control" type="text" name="Apellido" id="Apellido" onChange={this.handleChange} value={form?form.Apellido: ''}/>
                     <br />
-                    <label htmlFor="tipodocumento">Tipo de documento de identidad</label>
-                    <input className="form-control" type="text" name="tipodocumento" id="tipodocumento" onChange={this.handleChange} value={form?form.Tipo_de_documento: ''}/>
+                    <label htmlFor="Tipo_de_documento">Tipo de documento de identidad</label>
+                    <input className="form-control" type="text" name="Tipo_de_documento" id="Tipo_de_documento" onChange={this.handleChange} value={form?form.Tipo_de_documento: ''}/>
                     <br />
-                    <label htmlFor="documento de identidad">Documento de identidad</label>
-                    <input className="form-control" type="text" name="documentonum" id="documentonum" onChange={this.handleChange} value={form?form.Documento_de_identidad: ''}/>
+                    <label htmlFor="Documento_de_identidad">Documento de identidad</label>
+                    <input className="form-control" type="text" name="Documento_de_identidad" id="Documento_de_identidad" onChange={this.handleChange} value={form?form.Documento_de_identidad: ''}/>
                     <br />
-                    <label htmlFor="correo_electronico">Correo Electrónico</label>
-                    <input className="form-control" type="text" name="correoelectro" id="correoelectro" onChange={this.handleChange} value={form?form.Correo_Electrónico: ''}/>
+                    <label htmlFor="Correo_Electronico">Correo Electrónico</label>
+                    <input className="form-control" type="text" name="Correo_Electronico" id="Correo_Electronico" onChange={this.handleChange} value={form?form.Correo_Electronico: ''}/>
                     <br />
-                    <label htmlFor="correo_electronico">Celular</label>
-                    <input className="form-control" type="text" name="celular" id="celular" onChange={this.handleChange} value={form?form.Celular: ''}/>
+                    <label htmlFor="Celular">Celular</label>
+                    <input className="form-control" type="text" name="Celular" id="Celular" onChange={this.handleChange} value={form?form.Celular: ''}/>
                     <br />
-                    <label htmlFor="fechanacimiento">Fecha de Nacimiento</label>
-                    <input className="form-control" type="text" name="fechanacimiento" id="fechanacimiento" onChange={this.handleChange} value={form?form.Fecha_de_Nacimiento: ''}/>
+                    <label htmlFor="Fecha_de_Nacimiento">Fecha de Nacimiento</label>
+                    <input className="form-control" type="text" name="Fecha_de_Nacimiento" id="Fecha_de_Nacimiento" onChange={this.handleChange} value={form?form.Fecha_de_Nacimiento: ''}/>
                     <br />    
                     <label htmlFor="url">url</label>
                     <input className="form-control" type="text" name="url" id="url" onChange={this.handleChange} value={form?form.url: ''}/>
@@ -192,7 +198,7 @@ console.log(this.state.form);
 
           <Modal isOpen={this.state.modalEliminar}>
             <ModalBody>
-               Estás seguro que deseas eliminar a la empresa {form && form.nombre}
+               Estás seguro que deseas eliminar a la persona {form && form.Nombre}
             </ModalBody>
             <ModalFooter>
               <button className="btn btn-danger" onClick={()=>this.peticionDelete()}>Sí</button>

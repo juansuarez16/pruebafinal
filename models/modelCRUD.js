@@ -36,11 +36,11 @@ modulo.create = async (param, callback) => {
             try {
                 let params = param;
 
-                console.log(params);
+                console.log(param);
 
-                    const sql='CALL personaCrearoActua(?,?,?,?,?,?,?,?)'
+                    const sql='insert into persona(Nombre,Apellido,Tipo_de_documento,Documento_de_identidad,Correo_Electronico,Celular,Fecha_de_Nacimiento,url)value (?,?,?,?,?,?,?,?);'
                     
-                    if(await connection.query(sql, [params.Nombre,params.Apellido,params.Tipo_de_documento,params.Documento_de_identidad,params.Correo_Electronico,params.Celular.params.Fecha_de_Nacimiento,params.url ])){
+                    if(await connection.query(sql, [params.Nombre,params.Apellido,params.Tipo_de_documento,params.Documento_de_identidad,params.Correo_Electronico,params.Celular,params.Fecha_de_Nacimiento,params.url ])){
                     connection.release();
                     await callback({ message: `Persona cargada...!`, error: 0 });
                 } else {
@@ -63,9 +63,9 @@ modulo.update = async (param, callback) => {
 
                 let params = param;
 
-                    const sql='CALL personaCrearoActua(?,?,?,?,?,?,?,?,?)'
-                    
-                    if(connection.query(sql, [params.id,params.Nombre,params.Apellido,params.Tipo_de_documento,params.Documento_de_identidad,params.Correo_Electronico,params.Celular.params.Fecha_de_Nacimiento,params.url ])){
+                    const sql='UPDATE persona SET  Nombre=?,Apellido=?,Tipo_de_documento = ?,Documento_de_identidad = ?,Correo_Electronico = ?,Celular = ?,Fecha_de_Nacimiento = ?,url = ? where id_persona= ?;'
+                   
+                    if(connection.query(sql, [params.Nombre,params.Apellido,params.Tipo_de_documento,params.Documento_de_identidad,params.Correo_Electronico,params.Celular,params.Fecha_de_Nacimiento,params.url,params.id_persona ])){
                     connection.release();
                     await callback({ message: `Persona actualizada...!`, error: 0 });
                 } else {
@@ -91,7 +91,7 @@ modulo.delete = async (param, callback) => {
 
                     const sql='DELETE FROM persona where id_persona = ?'
                     
-                    if(connection.query(sql, [params.id])){
+                    if(connection.query(sql, [params.id_persona])){
                     connection.release();
                     await callback({ message: `Persona Eliminada...!`, error: 0 });
                 } else {

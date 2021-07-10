@@ -2,12 +2,18 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const https = require('https');
-
+const helmet = require('helmet');
 const app = express();
 const server = require('http').Server(app);
+const cors = require('cors');
 
-
-
+app.use(helmet());
+app.use(cors({
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+}));
 
 
 //Middlewares

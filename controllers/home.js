@@ -11,7 +11,7 @@ let home = {}
 
 home.read = async (req, res, next) => {    
     await params(req, res, async (err) => {
-        
+       
         await Model.read(req.body, async (result) => {
             await res.status(200).json(result);
         })
@@ -20,7 +20,7 @@ home.read = async (req, res, next) => {
 
 home.create = async (req, res, next) => { 
     await params(req, res, async (err) => {   
-       
+        
         await Model.create(req.body, async (result) => {
             await res.status(200).json(result);
         })
@@ -38,7 +38,7 @@ home.update = async (req, res, next) => {
 
 home.delete = async (req, res, next) => {    
     await params(req, res, async (err) => {
-        
+        await console.log(req.body);
         await Model.delete(req.body, async (result) => {
             await res.status(200).json(result);
         })
